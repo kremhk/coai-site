@@ -172,3 +172,14 @@ input:focus, textarea:focus{border-color:#2f394a}
   h1{font-size:36px}
   .team{grid-template-columns:repeat(2,1fr)}
 }
+
+/* === White links fix === */
+a,
+a:link,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+  color: #fff !important;
+  text-decoration: none;
+}
