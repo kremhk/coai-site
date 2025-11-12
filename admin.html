@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoAI — Панель администрирования</title>
+  <meta name="description" content="Центр заявок CoAI: следите за входящими лидами из формы и CRM в одном месте.">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+<header class="site-header site-header--solid" data-animate>
+  <div class="container nav-wrap">
+    <a href="index.html" class="logo">CoAI</a>
+    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav nav--inline" id="nav" aria-label="Навигация по панели">
+      <a href="index.html#hero">На главную</a>
+      <a href="index.html#portfolio">Проекты</a>
+      <a href="index.html#contact" class="btn btn--small">Связаться</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section section--panel admin-hero" data-animate>
+    <div class="container">
+      <div class="section__header">
+        <h1>Центр управления CoAI</h1>
+        <p>Все заявки с сайта автоматически попадают в нужные каналы: почта, CRM Flowline и внутренний инбокс. Обновления синхронизируются в реальном времени между вкладками.</p>
+      </div>
+      <div class="admin-hero__cta">
+        <div>
+          <h3>Статус систем</h3>
+          <ul class="status-list" id="channelStatus" aria-live="polite"></ul>
+        </div>
+        <div class="admin-hero__note">
+          <h3>Как это работает</h3>
+          <ol>
+            <li>Форма на сайте собирает информацию о запросе.</li>
+            <li>Данные отправляются в Flowline CRM и на почту <code>operations@coai.team</code>.</li>
+            <li>Копия заявки фиксируется в панели и сохраняется локально для оффлайн-доступа.</li>
+          </ol>
+        </div>
+        <aside class="admin-hero__credentials" aria-label="Данные для входа">
+          <h3>Доступ</h3>
+          <p>Используйте эти данные для входа в панель:</p>
+          <dl>
+            <div>
+              <dt>Логин</dt>
+              <dd><code>kremhk</code></dd>
+            </div>
+            <div>
+              <dt>Пароль</dt>
+              <dd><code>toor</code></dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-animate>
+    <div class="container">
+      <div class="admin-dashboard">
+        <article class="admin-column">
+          <header>
+            <h2>Админ инбокс</h2>
+            <p>Используйте для оперативного распределения задач внутри команды.</p>
+          </header>
+          <ul class="inbox-list" id="adminInbox" aria-live="polite"></ul>
+          <p class="empty-state" data-empty="admin">Пока нет новых сообщений. Как только придёт заявка, она появится здесь автоматически.</p>
+        </article>
+        <article class="admin-column">
+          <header>
+            <h2>Flowline CRM</h2>
+            <p>Заявки отправляются в формате лида с автоматическим тегированием.</p>
+          </header>
+          <ul class="inbox-list" id="crmQueue" aria-live="polite"></ul>
+          <p class="empty-state" data-empty="crm">Очередь пуста. Новые запросы появятся здесь с отметкой статуса.</p>
+        </article>
+        <article class="admin-column">
+          <header>
+            <h2>Почта operations@coai.team</h2>
+            <p>Журналы исходящих писем, синхронизированные с формой обратной связи.</p>
+          </header>
+          <ul class="inbox-list" id="emailQueue" aria-live="polite"></ul>
+          <p class="empty-state" data-empty="email">Исходящих писем пока нет. После отправки формы появится запись с темой и временем.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" data-animate>
+    <div class="container">
+      <div class="section__header">
+        <h2>Шаблоны ответов</h2>
+        <p>Сохраните готовые сообщения, чтобы быстро отвечать клиентам. Записи хранятся локально в браузере.</p>
+      </div>
+      <form class="quick-reply" id="quickReplyForm" autocomplete="off">
+        <label>
+          Заголовок
+          <input type="text" name="title" placeholder="Презентация / вступительное письмо" required>
+        </label>
+        <label>
+          Текст сообщения
+          <textarea name="body" rows="4" placeholder="Здравствуйте! Спасибо за обращение в CoAI..." required></textarea>
+        </label>
+        <button class="btn" type="submit">Сохранить шаблон</button>
+        <p class="form__status" id="quickReplyStatus" role="status" aria-live="polite"></p>
+      </form>
+      <div class="quick-reply__list" id="quickReplyList" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" data-animate>
+  <div class="container foot-grid">
+    <div>© <span id="year"></span> CoAI</div>
+    <div class="foot-links">
+      <a href="index.html#about">О нас</a>
+      <a href="index.html#portfolio">Проекты</a>
+      <a href="index.html#resources">Полезное</a>
+      <a href="index.html#contact">Контакты</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
