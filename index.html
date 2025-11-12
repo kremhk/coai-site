@@ -64,7 +64,19 @@
       </div>
       <div class="hero__visual" data-animate>
         <div class="hero__frame">
-          <img src="assets/placeholders/image-placeholder.svg" alt="Превью шоу-рила CoAI" loading="lazy">
+          <span class="sr-only">Анимированная визуализация AI-сцен с орбитами и светящимися слоями.</span>
+          <div class="hero__stage" aria-hidden="true">
+            <div class="hero__gridlines"></div>
+            <div class="hero__orb hero__orb--one"></div>
+            <div class="hero__orb hero__orb--two"></div>
+            <div class="hero__orb hero__orb--three"></div>
+            <div class="hero__ring"></div>
+            <div class="hero__meteor">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
           <button class="btn btn--circle" type="button" aria-label="Запросить презентацию" id="requestReel">
             <span>▶</span>
           </button>
