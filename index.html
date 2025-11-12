@@ -13,9 +13,6 @@
 <header class="site-header" data-animate>
   <div class="container nav-wrap">
     <a href="#hero" class="logo">CoAI</a>
-    <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
     <nav class="nav" id="nav">
       <a href="#about">О нас</a>
       <a href="#capabilities">Направления</a>
@@ -24,9 +21,14 @@
       <a href="#content-library">Медиа</a>
       <a href="#qr">QR‑архив</a>
       <a href="#resources">Полезное</a>
-      <a href="admin.html">Админ панель</a>
       <a href="#contact" class="btn btn--small">Связаться</a>
     </nav>
+    <div class="nav-actions">
+      <a href="admin.html" class="nav-actions__link">Админ панель</a>
+      <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -63,24 +65,31 @@
         </dl>
       </div>
       <div class="hero__visual" data-animate>
-        <div class="hero__frame">
-          <span class="sr-only">Анимированная визуализация AI-сцен с орбитами и светящимися слоями.</span>
-          <div class="hero__stage" aria-hidden="true">
-            <div class="hero__gridlines"></div>
-            <div class="hero__orb hero__orb--one"></div>
-            <div class="hero__orb hero__orb--two"></div>
-            <div class="hero__orb hero__orb--three"></div>
-            <div class="hero__ring"></div>
-            <div class="hero__meteor">
+        <figure class="hero__preview">
+          <span class="sr-only">Анимированный предпросмотр AI‑композиции с мягкими градиентами, сеткой и бегущими линиями.</span>
+          <div class="hero__preview-frame" aria-hidden="true">
+            <div class="hero__preview-sheen"></div>
+            <div class="hero__preview-grid"></div>
+            <div class="hero__preview-orbit hero__preview-orbit--one"></div>
+            <div class="hero__preview-orbit hero__preview-orbit--two"></div>
+            <div class="hero__preview-particles">
               <span></span>
               <span></span>
               <span></span>
             </div>
+            <div class="hero__preview-footer">
+              <div class="hero__preview-label">
+                <span>AI Vision Deck</span>
+                <small>Живой moodboard и сценарные кадры</small>
+              </div>
+              <button class="hero__preview-play" type="button" aria-label="Запросить презентацию" id="requestReel">
+                <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                  <path d="M12 8.5v15l12-7.5-12-7.5z"></path>
+                </svg>
+              </button>
+            </div>
           </div>
-          <button class="btn btn--circle" type="button" aria-label="Запросить презентацию" id="requestReel">
-            <span>▶</span>
-          </button>
-        </div>
+        </figure>
         <p class="hero__caption">Живые референсы, moodboard’ы и AI‑сцены в одном окне.</p>
       </div>
     </div>
