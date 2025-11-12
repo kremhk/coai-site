@@ -438,10 +438,28 @@ a:hover { color:var(--accent-hot); }
 }
 .teammate:hover { transform:translateY(-8px); border-color:var(--border); }
 .teammate__frame {
+  position:relative;
+  width:100%;
   aspect-ratio:4/3;
+  overflow:hidden;
   background:linear-gradient(135deg,rgba(135,243,208,0.2),rgba(202,169,255,0.25));
 }
-.teammate__frame img { width:100%; height:100%; object-fit:cover; opacity:0.9; }
+.teammate__frame img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.9;
+}
+
+@supports not (aspect-ratio: 1) {
+  .teammate__frame::before {
+    content:"";
+    display:block;
+    padding-top:75%;
+  }
+}
 .teammate__body { padding:22px; display:flex; flex-direction:column; gap:10px; }
 .muted { color:var(--muted); margin:0; }
 
