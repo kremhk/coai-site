@@ -103,10 +103,84 @@ const supportsStorage = (() => {
   }
 })();
 
+const StorageBridge = (() => {
+  let mode = supportsStorage ? 'localStorage' : 'cookie';
+
+  const notify = () => {
+    window.dispatchEvent(new CustomEvent('lead-storage-mode-changed', { detail: { mode } }));
+  };
+
+  const readCookie = key => {
+    const cookies = document.cookie ? document.cookie.split('; ') : [];
+    const encodedKey = `${encodeURIComponent(key)}=`;
+    const entry = cookies.find(cookie => cookie.startsWith(encodedKey));
+    if (!entry) return null;
+    return decodeURIComponent(entry.slice(encodedKey.length));
+  };
+
+  const writeCookie = (key, value) => {
+    document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}; path=/; max-age=31536000; SameSite=Lax`;
+  };
+
+  const dropCookie = key => {
+    document.cookie = `${encodeURIComponent(key)}=; path=/; max-age=0; SameSite=Lax`;
+  };
+
+  const fallbackToCookie = error => {
+    if (mode === 'cookie') return;
+    console.warn('Переключаемся на cookie‑режим: localStorage недоступно', error);
+    mode = 'cookie';
+    notify();
+  };
+
+  const getItem = key => {
+    if (mode === 'localStorage') {
+      try {
+        return window.localStorage.getItem(key);
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    return readCookie(key);
+  };
+
+  const setItem = (key, value) => {
+    if (mode === 'localStorage') {
+      try {
+        window.localStorage.setItem(key, value);
+        return;
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    writeCookie(key, value);
+  };
+
+  const removeItem = key => {
+    if (mode === 'localStorage') {
+      try {
+        window.localStorage.removeItem(key);
+        return;
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    dropCookie(key);
+  };
+
+  notify();
+
+  return {
+    getItem,
+    setItem,
+    removeItem,
+    getMode: () => mode
+  };
+})();
+
 const readQueue = key => {
-  if (!supportsStorage) return [];
   try {
-    const raw = window.localStorage.getItem(key);
+    const raw = StorageBridge.getItem(key);
     if (!raw) return [];
     const data = JSON.parse(raw);
     if (Array.isArray(data)) return data;
@@ -118,9 +192,8 @@ const readQueue = key => {
 };
 
 const writeQueue = (key, list) => {
-  if (!supportsStorage) return;
   try {
-    window.localStorage.setItem(key, JSON.stringify(list));
+    StorageBridge.setItem(key, JSON.stringify(list));
     window.dispatchEvent(new CustomEvent('lead-storage-changed', { detail: { key } }));
   } catch (error) {
     console.error('Не удалось сохранить очередь', key, error);
@@ -206,6 +279,7 @@ const LeadRouter = {
 
 // ---------- contact form ----------
 const contactForm = document.getElementById('contactForm');
+const storageHint = document.getElementById('storageHint');
 if (contactForm) {
   const statusNode = contactForm.querySelector('.form__status');
   contactForm.addEventListener('submit', async event => {
@@ -246,6 +320,26 @@ if (contactForm) {
     }
   });
 }
+
+const storageWarning = document.getElementById('storageWarning');
+const applyStorageMode = () => {
+  const mode = StorageBridge.getMode();
+  if (storageHint) {
+    storageHint.textContent = mode === 'localStorage'
+      ? 'Заявка сохранится в localStorage и появится в admin.html сразу после отправки.'
+      : 'Браузер ограничил localStorage, поэтому заявка сохраняется в cookies и будет доступна только на этом устройстве.';
+  }
+  if (storageWarning) {
+    if (mode !== 'localStorage') {
+      storageWarning.removeAttribute('hidden');
+    } else {
+      storageWarning.setAttribute('hidden', 'hidden');
+    }
+  }
+};
+
+applyStorageMode();
+window.addEventListener('lead-storage-mode-changed', applyStorageMode);
 
 // ---------- admin dashboard rendering ----------
 const formatDate = iso => {
