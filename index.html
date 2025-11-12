@@ -24,7 +24,7 @@
       <a href="#content-library">Медиа</a>
       <a href="#qr">QR‑архив</a>
       <a href="#resources">Полезное</a>
-      <a href="#admin">Администрирование</a>
+      <a href="admin.html">Админ панель</a>
       <a href="#contact" class="btn btn--small">Связаться</a>
     </nav>
   </div>
@@ -193,9 +193,10 @@
       </div>
       <div class="portfolio-grid">
         <article class="portfolio-card" data-animate>
-          <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Видео для главы Татарстана" loading="lazy">
-          </figure>
+          <div class="portfolio-card__media" data-vimeo>
+            <iframe src="https://player.vimeo.com/video/76979871?h=bb992dc0dd" title="Видео для главы Татарстана"
+              loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>
           <h3>Видео для главы Татарстана</h3>
           <p>Короткая документалистика о цифровой трансформации региона.</p>
           <ul class="tags">
@@ -205,9 +206,10 @@
           </ul>
         </article>
         <article class="portfolio-card" data-animate>
-          <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Спартакиада Кадет" loading="lazy">
-          </figure>
+          <div class="portfolio-card__media" data-vimeo>
+            <iframe src="https://player.vimeo.com/video/395124534?h=0ce73ce55a" title="Спартакиада Кадет"
+              loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>
           <h3>Спартакиада Кадет</h3>
           <p>Серия вертикальных роликов для соцсетей с использованием генеративных костюмов.</p>
           <ul class="tags">
@@ -216,9 +218,10 @@
           </ul>
         </article>
         <article class="portfolio-card" data-animate>
-          <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Презентация «ЗаказРФ»" loading="lazy">
-          </figure>
+          <div class="portfolio-card__media" data-vimeo>
+            <iframe src="https://player.vimeo.com/video/577230730?h=65aa6510c0" title="Презентация «ЗаказРФ»"
+              loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>
           <h3>Презентация «ЗаказРФ»</h3>
           <p>Full‑CG видео о цифровых процессах, визуализация данных и архитектурных пространств.</p>
           <ul class="tags">
@@ -227,9 +230,10 @@
           </ul>
         </article>
         <article class="portfolio-card" data-animate>
-          <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Креатив для «Додо Пиццы»" loading="lazy">
-          </figure>
+          <div class="portfolio-card__media" data-vimeo>
+            <iframe src="https://player.vimeo.com/video/455160692?h=03e5953ec7" title="Креатив для «Додо Пиццы»"
+              loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+          </div>
           <h3>Креатив для «Додо Пиццы»</h3>
           <p>Серия зимних визуалов для уличного катка и digital‑поддержки.</p>
           <ul class="tags">
@@ -239,7 +243,7 @@
         </article>
       </div>
       <aside class="portfolio-note" data-animate>
-        <p><strong>Локальные папки для обновлений:</strong> изображения кейсов складываются в <code>assets/images/portfolio/</code>. Подмените файлы — и карточки обновятся автоматически.</p>
+        <p><strong>Видео подгружаются с Vimeo.</strong> Замените ID ролика в атрибуте <code>src</code> — и карточка моментально обновится. Дополнительные визуалы храните в <code>assets/images/portfolio/</code>.</p>
       </aside>
     </div>
   </section>
@@ -343,42 +347,6 @@
     </div>
   </section>
 
-  <section class="section section--panel" id="admin" data-animate>
-    <div class="container">
-      <div class="section__header">
-        <h2>Панель администрирования</h2>
-        <p>Встроенный модуль для быстрого обновления информации на сайте. Поле авторизации защищает панель для внутренней команды.</p>
-      </div>
-      <div class="admin-panel">
-        <form class="admin-panel__form" id="adminForm" autocomplete="off">
-          <label>
-            Логин
-            <input type="text" name="admin-login" placeholder="team@coai" required>
-          </label>
-          <label>
-            Пароль
-            <input type="password" name="admin-password" placeholder="••••••" required>
-          </label>
-          <label>
-            Быстрая заметка
-            <textarea name="admin-note" rows="4" placeholder="Напишите, что нужно обновить..." required></textarea>
-          </label>
-          <button class="btn" type="submit">Отправить запрос</button>
-          <p class="form__note">Запросы уходят в командный Telegram. Настройте обработчик в <code>script.js</code>.</p>
-        </form>
-        <div class="admin-panel__info">
-          <h3>Что можно сделать?</h3>
-          <ul class="checklist">
-            <li>Обновить тексты и ссылки в секциях.</li>
-            <li>Заменить изображения в папках <code>assets/images/</code>.</li>
-            <li>Добавить новые QR‑коды для мероприятий.</li>
-            <li>Пополнить библиотеку ресурсов и медиакит.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="section section--contact" id="contact" data-animate>
     <div class="container">
       <div class="section__header">
@@ -404,11 +372,12 @@
             <textarea name="message" rows="5" required></textarea>
           </label>
           <button class="btn" type="submit">Отправить</button>
+          <p class="form__status" role="status" aria-live="polite"></p>
         </form>
         <div class="contact__info">
           <div class="info-box">
             <h3>Контакты</h3>
-            <p>📩 Email: <a href="mailto:wemmzzit@gmail.com">wemmzzit@gmail.com</a></p>
+            <p>📩 Email: <a href="mailto:hello@coai.team">hello@coai.team</a></p>
             <p>💬 Telegram: <a href="https://t.me/wemms_cr" target="_blank" rel="noopener">@wemms_cr</a></p>
             <p>📱 QR‑код на визитку — папка <code>assets/qr/</code>.</p>
           </div>
