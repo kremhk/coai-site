@@ -1,6 +1,9 @@
 const root = document.documentElement;
+const body = document.body;
 
 // ---------- helpers ----------
+const ADMIN_SESSION_KEY = 'coai::adminAuth';
+const ADMIN_CREDENTIALS = { login: 'kremhk', password: 'toor' };
 const throttle = (fn, wait = 150) => {
   let timer = null;
   return (...args) => {
@@ -29,6 +32,72 @@ const applyDeviceFlag = () => {
 applyDeviceFlag();
 window.addEventListener('resize', throttle(applyDeviceFlag, 200));
 window.addEventListener('orientationchange', applyDeviceFlag);
+
+// ---------- admin login gate ----------
+const initAdminGate = () => {
+  if (!body.classList.contains('admin-page')) return;
+  const form = document.getElementById('adminLoginForm');
+  const lock = document.getElementById('adminLock');
+  const status = document.getElementById('adminLoginStatus');
+  if (!form || !lock) {
+    body.classList.remove('admin-locked');
+    return;
+  }
+
+  const persist = granted => {
+    try {
+      if (granted) {
+        window.sessionStorage.setItem(ADMIN_SESSION_KEY, 'granted');
+      } else {
+        window.sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      }
+    } catch (error) {
+      console.warn('Не удалось сохранить состояние логина', error);
+    }
+  };
+
+  const unlock = () => {
+    persist(true);
+    body.classList.remove('admin-locked');
+    lock.setAttribute('hidden', '');
+    lock.setAttribute('aria-hidden', 'true');
+    status.textContent = '';
+  };
+
+  const saved = (() => {
+    try {
+      return window.sessionStorage.getItem(ADMIN_SESSION_KEY);
+    } catch (error) {
+      console.warn('Не удалось прочитать состояние логина', error);
+      return null;
+    }
+  })();
+
+  if (saved === 'granted') {
+    unlock();
+    return;
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const login = String(formData.get('login') || '').trim();
+    const password = String(formData.get('password') || '').trim();
+    const isValid = login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password;
+    if (isValid) {
+      unlock();
+      form.reset();
+    } else {
+      persist(false);
+      status.textContent = 'Нет доступа: проверьте логин и пароль.';
+      form.reset();
+      const loginField = form.querySelector('input[name="login"]');
+      loginField?.focus();
+    }
+  });
+};
+
+initAdminGate();
 
 // ---------- navigation ----------
 const burger = document.getElementById('burger');

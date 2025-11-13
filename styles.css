@@ -87,6 +87,73 @@ a:hover { color:var(--accent-hot); }
 .nav--inline .btn { margin-left:10px; }
 .site-header--solid { background:rgba(5,6,10,0.92); backdrop-filter:saturate(160%) blur(12px); }
 .admin-page main { padding-top:40px; }
+.admin-page.admin-locked {
+  overflow:hidden;
+}
+.admin-page.admin-locked header,
+.admin-page.admin-locked main,
+.admin-page.admin-locked footer {
+  opacity:0;
+  pointer-events:none;
+  user-select:none;
+}
+.admin-login {
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(3,5,12,0.92);
+  backdrop-filter:blur(18px);
+  z-index:9999;
+}
+.admin-page:not(.admin-locked) .admin-login {
+  display:none;
+}
+.admin-login__form {
+  width:100%;
+  max-width:420px;
+  background:var(--card-bg);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:var(--radius);
+  box-shadow:0 25px 60px rgba(6,11,25,0.55);
+  padding:32px;
+  display:grid;
+  gap:18px;
+}
+.admin-login__intro h1 {
+  margin:0 0 6px;
+}
+.admin-login__intro p {
+  margin:0;
+  color:var(--muted);
+}
+.admin-login__form label {
+  display:grid;
+  gap:6px;
+  font-weight:500;
+}
+.admin-login__form input {
+  padding:12px 14px;
+  border-radius:var(--radius-sm);
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(3,6,16,0.6);
+  color:var(--fg);
+}
+.admin-login__form input:focus {
+  outline:2px solid var(--accent);
+  border-color:var(--accent);
+}
+.admin-login__form .btn {
+  width:100%;
+}
+.admin-login__form .form__status {
+  min-height:20px;
+  margin:0;
+  color:var(--accent-hot);
+  font-weight:600;
+}
 .burger {
   display:none;
   width:44px;
