@@ -5,6 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>FAQ по AI-контенту — CoAI</title>
   <meta name="description" content="Ответы на вопросы об авторских правах, лицензиях и этике при создании AI-контента в CoAI.">
+  <meta name="color-scheme" content="dark light">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const STORAGE_KEY = 'coai::theme';
+      const normalize = value => (value === 'light' || value === 'dark' || value === 'auto') ? value : 'auto';
+      const getStored = () => {
+        try { return localStorage.getItem(STORAGE_KEY); } catch (error) { return null; }
+      };
+      const getSystemTheme = () => {
+        if (typeof window.matchMedia !== 'function') return 'light';
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      };
+      const stored = normalize(getStored());
+      const resolved = stored === 'auto' ? getSystemTheme() : stored;
+      root.dataset.theme = resolved;
+      root.dataset.themeMode = stored;
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -19,6 +38,15 @@
       <a href="index.html#cases">Кейсы</a>
       <a href="index.html#contact" class="btn btn--small">Связаться</a>
     </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <span class="theme-toggle__icons" aria-hidden="true">
+          <span class="theme-toggle__icon theme-toggle__icon--sun">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon">🌙</span>
+        </span>
+        <span class="theme-toggle__label" id="themeToggleLabel">Система</span>
+      </button>
+    </div>
   </div>
 </header>
 <main class="policy">
