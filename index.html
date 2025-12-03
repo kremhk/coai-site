@@ -10,20 +10,28 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<header class="site-header" data-animate>
+<header class="site-header" data-animate="fade-down">
   <div class="container nav-wrap">
     <a href="#hero" class="logo">CoAI</a>
     <nav class="nav" id="nav">
-      <a href="#about">О нас</a>
-      <a href="#capabilities">Направления</a>
-      <a href="#team">Команда</a>
-      <a href="#portfolio">Проекты</a>
-      <a href="#content-library">Медиа</a>
-      <a href="#qr">QR‑архив</a>
-      <a href="#resources">Полезное</a>
-      <a href="#contact" class="btn btn--small">Связаться</a>
+      <a href="#about" data-nav-link>О нас</a>
+      <a href="#capabilities" data-nav-link>Направления</a>
+      <a href="#team" data-nav-link>Команда</a>
+      <a href="#portfolio" data-nav-link>Проекты</a>
+      <a href="#cases" data-nav-link>Кейсы</a>
+      <a href="#content-library" data-nav-link>Медиа</a>
+      <a href="#qr" data-nav-link>QR‑архив</a>
+      <a href="#resources" data-nav-link>Полезное</a>
+      <a href="#contact" class="btn btn--small" data-nav-link>Связаться</a>
     </nav>
     <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <span class="theme-toggle__icons" aria-hidden="true">
+          <span class="theme-toggle__icon theme-toggle__icon--sun">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon">🌙</span>
+        </span>
+        <span class="theme-toggle__label" id="themeToggleLabel">Система</span>
+      </button>
       <button class="burger" id="burger" aria-label="Открыть меню" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
@@ -33,37 +41,46 @@
 
 <main>
   <section class="hero" id="hero">
-    <div class="hero__background" aria-hidden="true">
+    <div class="hero__background" aria-hidden="true" data-parallax data-speed="0.2">
       <div class="hero__glow hero__glow--one"></div>
       <div class="hero__glow hero__glow--two"></div>
       <div class="hero__orbit"></div>
     </div>
     <div class="container hero__grid">
-      <div class="hero__content" data-animate>
+      <div class="hero__content" data-animate="fade-up">
         <span class="hero__badge">AI‑контент студия полного цикла</span>
         <h1>CoAI — создаём визуальные миры, где технологии работают на идею</h1>
         <p class="lead">Мы соединяем искусственный интеллект, режиссуру и дизайн, чтобы запускать видеопроекты и digital‑коммуникации быстрее и ярче.</p>
         <p class="mission">Команда продюсеров, художников и инженеров переводит сложные концепции в понятную визуальную историю: от стратегии и сценария до релиза и аналитики.</p>
-        <div class="cta">
-          <a href="#portfolio" class="btn">Смотреть шоу‑рил</a>
-          <a href="#contact" class="btn btn--ghost">Обсудить задачу</a>
+        <div class="hero__actions" data-animate="fade-up" data-animate-delay="0.1s">
+          <a href="#contact" class="btn btn--primary" data-scroll>Обсудить проект</a>
+          <a href="#portfolio" class="btn btn--ghost" data-scroll>Смотреть проекты</a>
         </div>
         <dl class="hero__stats">
-          <div>
-            <dt>60+ проектов</dt>
-            <dd>Видео, инсталляции и кампании</dd>
+          <div class="hero__stat">
+            <span class="hero__stat-icon" aria-hidden="true">🚀</span>
+            <div>
+              <dt>60+ проектов</dt>
+              <dd>Видео, инсталляции и кампании</dd>
+            </div>
           </div>
-          <div>
-            <dt>48 часов</dt>
-            <dd>Средний срок первого концепта</dd>
+          <div class="hero__stat">
+            <span class="hero__stat-icon" aria-hidden="true">⚡</span>
+            <div>
+              <dt>48 часов</dt>
+              <dd>Средний срок первого концепта</dd>
+            </div>
           </div>
-          <div>
-            <dt>Full remote</dt>
-            <dd>Работаем по всему миру</dd>
+          <div class="hero__stat">
+            <span class="hero__stat-icon" aria-hidden="true">🌍</span>
+            <div>
+              <dt>Full remote</dt>
+              <dd>Работаем по всему миру</dd>
+            </div>
           </div>
         </dl>
       </div>
-      <div class="hero__visual" data-animate>
+      <div class="hero__visual" data-animate="fade-up" data-animate-delay="0.15s">
         <figure class="hero__preview">
           <span class="sr-only">Анимированный предпросмотр AI‑композиции с мягкими градиентами, сеткой и бегущими линиями.</span>
           <div class="hero__preview-frame" aria-hidden="true">
@@ -94,7 +111,7 @@
     </div>
   </section>
 
-  <section class="section" id="about" data-animate>
+  <section class="section" id="about" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Кто мы</h2>
@@ -117,7 +134,7 @@
     </div>
   </section>
 
-  <section class="section section--tinted" id="capabilities" data-animate>
+  <section class="section section--tinted" id="capabilities" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Направления работы</h2>
@@ -158,54 +175,78 @@
     </div>
   </section>
 
-  <section class="section" id="team" data-animate>
+  <section class="section" id="team" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Команда</h2>
         <p>Ядро CoAI — кросс‑функциональная команда, которая собрала свои сильные компетенции вокруг AI‑пайплайна.</p>
       </div>
       <div class="team-grid">
-        <article class="teammate">
+        <article class="teammate" data-animate="fade-up" data-animate-delay="0.05s">
           <figure class="teammate__frame">
-            <img src="assets/placeholders/image-placeholder.svg" alt="Анастасия Афонина" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Анастасия Афонина" loading="lazy">
           </figure>
           <div class="teammate__body">
             <h3>Анастасия Афонина</h3>
-            <p class="muted">Креативный продюсер, режиссёр нейросетевых проектов, основатель CoAI. Курирует путь от идеи до финального монтажа.</p>
+            <span class="teammate__role">Генеративный продюсер</span>
+            <p class="muted">Креативный продюсер и режиссёр нейросетевых проектов, курирует путь от идеи до релиза.</p>
+            <ul class="teammate__skills">
+              <li>AI пайплайн</li>
+              <li>Storytelling</li>
+              <li>Питчинг</li>
+            </ul>
           </div>
         </article>
-        <article class="teammate">
+        <article class="teammate" data-animate="fade-up" data-animate-delay="0.1s">
           <figure class="teammate__frame">
-            <img src="assets/placeholders/image-placeholder.svg" alt="Digital-artist" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1526498460520-4c246339dccb?auto=format&fit=crop&w=600&q=80" alt="Digital-artist" loading="lazy">
           </figure>
           <div class="teammate__body">
             <h3>Digital‑artist</h3>
-            <p class="muted">Строит визуальный стиль, занимается стилизацией и созданием world‑building.</p>
+            <span class="teammate__role">Промпт-арт &amp; стилизация</span>
+            <p class="muted">Строит визуальный стиль, занимается world‑building и динамическими moodboard’ами.</p>
+            <ul class="teammate__skills">
+              <li>Midjourney</li>
+              <li>Stable Diffusion</li>
+              <li>VFX</li>
+            </ul>
           </div>
         </article>
-        <article class="teammate">
+        <article class="teammate" data-animate="fade-up" data-animate-delay="0.15s">
           <figure class="teammate__frame">
-            <img src="assets/placeholders/image-placeholder.svg" alt="Motion designer" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?auto=format&fit=crop&w=600&q=80" alt="Motion designer" loading="lazy">
           </figure>
           <div class="teammate__body">
             <h3>Motion / Montage</h3>
+            <span class="teammate__role">AI‑монтаж</span>
             <p class="muted">Собирает ритм и динамику, отвечает за переходы, звук и адаптации.</p>
+            <ul class="teammate__skills">
+              <li>After Effects</li>
+              <li>Runway</li>
+              <li>Sound design</li>
+            </ul>
           </div>
         </article>
-        <article class="teammate">
+        <article class="teammate" data-animate="fade-up" data-animate-delay="0.2s">
           <figure class="teammate__frame">
-            <img src="assets/placeholders/image-placeholder.svg" alt="AI researcher" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80" alt="AI researcher" loading="lazy">
           </figure>
           <div class="teammate__body">
             <h3>AI Researcher</h3>
-            <p class="muted">Настраивает пайплайны, пишет скрипты для генерации, оптимизирует время вывода.</p>
+            <span class="teammate__role">R&amp;D инженер</span>
+            <p class="muted">Настраивает пайплайны, пишет скрипты для генерации и оптимизирует время вывода.</p>
+            <ul class="teammate__skills">
+              <li>Python</li>
+              <li>ComfyUI</li>
+              <li>Custom models</li>
+            </ul>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section section--tinted" id="portfolio" data-animate>
+  <section class="section section--tinted" id="portfolio" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Проекты и кейсы</h2>
@@ -218,7 +259,11 @@
               loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
           </div>
           <h3>Видео для главы Татарстана</h3>
-          <p>Короткая документалистика о цифровой трансформации региона.</p>
+          <ul class="project-brief">
+            <li><span>Задача</span>Показать цифровую трансформацию региона для выступления на форуме.</li>
+            <li><span>Решение</span>Собрали AI‑сториборд, CG‑макеты заводов и динамические титры.</li>
+            <li><span>Результат</span>4‑минутный фильм, который открывал панель и попал в федеральные СМИ.</li>
+          </ul>
           <ul class="tags">
             <li>AI видео</li>
             <li>Story</li>
@@ -231,7 +276,11 @@
               loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
           </div>
           <h3>Спартакиада Кадет</h3>
-          <p>Серия вертикальных роликов для соцсетей с использованием генеративных костюмов.</p>
+          <ul class="project-brief">
+            <li><span>Задача</span>Осветить спортивное событие в вертикальных форматах.</li>
+            <li><span>Решение</span>Генеративные костюмы, motion‑графика и монтаж в TikTok‑динамике.</li>
+            <li><span>Результат</span>30+ коротких роликов, которые собрали 1,2M просмотров.</li>
+          </ul>
           <ul class="tags">
             <li>Вертикальные форматы</li>
             <li>AI персонажи</li>
@@ -243,7 +292,11 @@
               loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
           </div>
           <h3>Презентация «ЗаказРФ»</h3>
-          <p>Full‑CG видео о цифровых процессах, визуализация данных и архитектурных пространств.</p>
+          <ul class="project-brief">
+            <li><span>Задача</span>Презентовать платформу государственных закупок инвесторам.</li>
+            <li><span>Решение</span>Собрали full‑CG мир, графику данных и AI‑голос для сторителлинга.</li>
+            <li><span>Результат</span>Видео, которое легло в основу keynote и investor deck.</li>
+          </ul>
           <ul class="tags">
             <li>CG</li>
             <li>AI сценография</li>
@@ -255,7 +308,11 @@
               loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
           </div>
           <h3>Креатив для «Додо Пиццы»</h3>
-          <p>Серия зимних визуалов для уличного катка и digital‑поддержки.</p>
+          <ul class="project-brief">
+            <li><span>Задача</span>Запустить сезонную кампанию для городского катка.</li>
+            <li><span>Решение</span>AI‑арт в фирменной палитре, саунд‑дизайн и адаптация под DOOH.</li>
+            <li><span>Результат</span>+28% посещаемости площадки за счёт визуальной кампании.</li>
+          </ul>
           <ul class="tags">
             <li>Брендинг</li>
             <li>AI арт</li>
@@ -263,77 +320,180 @@
         </article>
       </div>
       <aside class="portfolio-note" data-animate>
-        <p><strong>Видео подгружаются с Vimeo.</strong> Замените ID ролика в атрибуте <code>src</code> — и карточка моментально обновится. Дополнительные визуалы храните в <code>assets/images/portfolio/</code>.</p>
+        <p>Для каждой задачи подготавливаем приватный плейлист с raw‑материалами, бэкстейджем и раскадровками — отправим по запросу.</p>
       </aside>
     </div>
   </section>
 
-  <section class="section" id="content-library" data-animate>
+  <section class="section cases" id="cases" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
-        <h2>Контент‑библиотека</h2>
-        <p>Подборки материалов, раскадровки, саундреференсы и дополнительные медиа для клиентов.</p>
+        <h2>Кейсы в цифрах</h2>
+        <p>Собрали любимые кампании за последние месяцы — каждая карточка раскрывает задачу, визуальный приём и результат.</p>
       </div>
-      <div class="content-grid">
-        <article class="content-card">
+      <div class="cases-grid">
+        <article class="case-card">
           <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Moodboard и раскадровки" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=900&q=80" alt="Digital twin" loading="lazy">
+            <span class="case-card__logo">TATNEFT</span>
           </figure>
-          <div class="content-card__body">
-            <h3>Moodboard / раскадровки</h3>
-            <p>Папка <code>assets/images/content/</code> — храните предварительные визуалы и стилистические подборки.</p>
-            <a class="link-arrow" href="#" aria-disabled="true">Скоро доступно</a>
+          <div class="case-card__body">
+            <h3>Digital twin презентация</h3>
+            <p>Сняли завод без физической съёмки: смешали AI‑модели, CG и живой саунд.</p>
+            <ul class="case-card__stats">
+              <li><span>+200%</span> вовлечённости на презентации</li>
+              <li><span>45</span> AI‑итераций за неделю</li>
+              <li><span>10 дней</span> от брифа до релиза</li>
+            </ul>
           </div>
         </article>
-        <article class="content-card">
+        <article class="case-card">
           <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Сторителлинг" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=80" alt="Спартакиада" loading="lazy">
+            <span class="case-card__logo">Спартакиада Кадет</span>
           </figure>
-          <div class="content-card__body">
-            <h3>Сценарии и voiceover</h3>
-            <p>Загружайте PDF или текстовые файлы в <code>assets/resources/</code> и выдавайте доступ клиентам.</p>
-            <a class="link-arrow" href="#" aria-disabled="true">Добавьте ссылку</a>
+          <div class="case-card__body">
+            <h3>Vertical stories</h3>
+            <p>AI‑костюмы и motion‑тайпографика для спортивного эвента.</p>
+            <ul class="case-card__stats">
+              <li><span>1,2M</span> просмотров в Reels/TikTok</li>
+              <li><span>32</span> ролика за 4 дня</li>
+              <li><span>+18%</span> ER в соцсетях</li>
+            </ul>
           </div>
         </article>
-        <article class="content-card">
+        <article class="case-card">
           <figure>
-            <img src="assets/placeholders/image-placeholder.svg" alt="Бэкстейдж" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="ЗаказРФ" loading="lazy">
+            <span class="case-card__logo">ЗаказРФ</span>
           </figure>
-          <div class="content-card__body">
-            <h3>Бэкстейдж и making‑of</h3>
-            <p>Фото и видео процесса удобно хранить в <code>assets/images/team/</code> или отдельном подпапке.</p>
-            <a class="link-arrow" href="#" aria-disabled="true">Загрузите контент</a>
+          <div class="case-card__body">
+            <h3>Investor film</h3>
+            <p>Full‑CG ролик с визуализацией процессов платформы и data‑сторителлингом.</p>
+            <ul class="case-card__stats">
+              <li><span>6</span> ключевых сценариев в одном фильме</li>
+              <li><span>5</span> языковых версий</li>
+              <li><span>+30%</span> отклика инвесторов</li>
+            </ul>
+          </div>
+        </article>
+        <article class="case-card">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=900&q=80" alt="Dodo" loading="lazy">
+            <span class="case-card__logo">Додо Пицца</span>
+          </figure>
+          <div class="case-card__body">
+            <h3>Winter campaign</h3>
+            <p>Создали серию визуалов для катка и out-of-home носителей.</p>
+            <ul class="case-card__stats">
+              <li><span>+28%</span> посещаемости локации</li>
+              <li><span>14</span> адаптаций под форматы</li>
+              <li><span>3</span> городские активации</li>
+            </ul>
+          </div>
+        </article>
+        <article class="case-card case-card--concept">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80" alt="Fintech" loading="lazy">
+            <span class="case-card__logo">FinHub</span>
+          </figure>
+          <div class="case-card__body">
+            <div class="case-card__tag">Концепт-кейс</div>
+            <h3>AI onboarding</h3>
+            <p>Концепция роликов для обучения пользователей финтех‑сервиса.</p>
+            <ul class="case-card__stats">
+              <li><span>80K</span> просмотров на тестовом запуске</li>
+              <li><span>6,3%</span> CTR в перформансе</li>
+              <li><span>7</span> локализаций</li>
+            </ul>
+          </div>
+        </article>
+        <article class="case-card case-card--concept">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=900&q=80" alt="NovaWear" loading="lazy">
+            <span class="case-card__logo">NovaWear</span>
+          </figure>
+          <div class="case-card__body">
+            <div class="case-card__tag">Концепт-кейс</div>
+            <h3>Fashion VFX capsule</h3>
+            <p>Демонстрация AI‑капсулы для e‑com с лёгким параллаксом и саунд‑дизайном.</p>
+            <ul class="case-card__stats">
+              <li><span>+18%</span> прогноз конверсии</li>
+              <li><span>24</span> кадра в серии</li>
+              <li><span>Realtime</span> примерочная</li>
+            </ul>
           </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section section--tinted" id="qr" data-animate>
+  <section class="section" id="content-library" data-animate="slide-up">
+    <div class="container">
+      <div class="section__header">
+        <h2>Контент‑библиотека</h2>
+        <p>Поддерживаем клиентов приватными moodboard’ами, раскадровками, саундреференсами и making‑of материалами — доступ выдаём по запросу.</p>
+      </div>
+      <div class="content-grid">
+        <article class="content-card">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1526481280695-3c4699d6ab1c?auto=format&fit=crop&w=800&q=80" alt="Moodboard и раскадровки" loading="lazy">
+          </figure>
+          <div class="content-card__body">
+            <h3>Moodboard / раскадровки</h3>
+            <p>Компонуем референсы и сценарные кадры по каждому проекту, чтобы быстро согласовывать визуальный язык.</p>
+            <a class="link-arrow" href="#contact" data-scroll>Запросить доступ</a>
+          </div>
+        </article>
+        <article class="content-card">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80" alt="Сторителлинг" loading="lazy">
+          </figure>
+          <div class="content-card__body">
+            <h3>Сценарии и voiceover</h3>
+            <p>Подготовим текстовые и аудио‑скрипты, озвучку для пилотов и презентации для внутренних команд.</p>
+            <a class="link-arrow" href="#contact" data-scroll>Получить подборку</a>
+          </div>
+        </article>
+        <article class="content-card">
+          <figure>
+            <img src="https://images.unsplash.com/photo-1517602302552-471fe67acf66?auto=format&fit=crop&w=800&q=80" alt="Бэкстейдж" loading="lazy">
+          </figure>
+          <div class="content-card__body">
+            <h3>Бэкстейдж и making‑of</h3>
+            <p>Собираем закулисные материалы, версии сцен и breakdown — отличная база для пресс‑релизов и соцсетей.</p>
+            <a class="link-arrow" href="#contact" data-scroll>Получить ссылку</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tinted" id="qr" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>QR‑архив</h2>
-        <p>Быстрые ссылки для офлайна и презентаций. Замените изображения в <code>assets/qr/</code>.</p>
+        <p>Используем QR‑коды на офлайн-материалах, выставках и печати: визитки, медиакиты, backstage‑истории.</p>
       </div>
       <div class="qr-grid">
         <article class="qr-card">
-          <figure>
-            <img src="assets/placeholders/qr-placeholder.svg" alt="QR на визитку" loading="lazy">
-          </figure>
+          <div class="qr-card__mock" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
           <h3>Визитка</h3>
           <p>Мгновенный переход к контактам и презентации.</p>
         </article>
         <article class="qr-card">
-          <figure>
-            <img src="assets/placeholders/qr-placeholder.svg" alt="QR на медиакит" loading="lazy">
-          </figure>
+          <div class="qr-card__mock" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
           <h3>Медиакит</h3>
           <p>Для партнеров и конференций — PDF с актуальными материалами.</p>
         </article>
         <article class="qr-card">
-          <figure>
-            <img src="assets/placeholders/qr-placeholder.svg" alt="QR на backstage" loading="lazy">
-          </figure>
+          <div class="qr-card__mock" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
           <h3>Backstage</h3>
           <p>Эксклюзивные истории о производстве и пайплайнах.</p>
         </article>
@@ -341,11 +501,11 @@
     </div>
   </section>
 
-  <section class="section" id="resources" data-animate>
+  <section class="section" id="resources" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Полезные ссылки</h2>
-        <p>Подборка материалов для клиентов и коллег. Обновляйте список прямо в коде.</p>
+        <p>Подборка, которой делимся при старте совместной работы: как подготовить бриф, на что обратить внимание и чего ожидать от AI‑пайплайна.</p>
       </div>
       <div class="links-grid">
         <article class="link-card">
@@ -356,18 +516,18 @@
         <article class="link-card">
           <h3>FAQ по AI‑контенту</h3>
           <p>Ответы на вопросы о правовых аспектах, лицензиях и этике.</p>
-          <a href="https://coai.ai" target="_blank" rel="noopener" class="link-arrow">Читать на сайте</a>
+          <a href="faq.html" class="link-arrow">Читать на сайте</a>
         </article>
         <article class="link-card">
-          <h3>Памятка для партнёров</h3>
-          <p>Чек-лист материалов, которые мы запрашиваем перед стартом.</p>
-          <a href="#" class="link-arrow" aria-disabled="true">Добавьте ссылку</a>
+          <h3>Процесс работы CoAI</h3>
+          <p>Пятишаговый плейбук: погружение, концепция, прототип, продакшн, релиз.</p>
+          <a href="playbook.html" class="link-arrow">Читать плейбук</a>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section section--contact" id="contact" data-animate>
+  <section class="section section--contact" id="contact" data-animate="slide-up">
     <div class="container">
       <div class="section__header">
         <h2>Связаться с нами</h2>
@@ -376,10 +536,10 @@
       <div class="contact">
         <form class="form" id="contactForm" name="contact" method="post" action="#">
           <label>Имя
-            <input type="text" name="name" required>
+            <input type="text" name="name" placeholder="Имя и компания" required>
           </label>
           <label>Email
-            <input type="email" name="email" required>
+            <input type="email" name="email" placeholder="you@company.com" required>
           </label>
           <label>Формат запроса
             <select name="request-type">
@@ -389,22 +549,45 @@
             </select>
           </label>
           <label>Сообщение
-            <textarea name="message" rows="5" required></textarea>
+            <textarea name="message" rows="5" placeholder="Расскажите о проекте в двух-трёх предложениях" required></textarea>
           </label>
           <button class="btn" type="submit">Отправить</button>
           <p class="form__status" role="status" aria-live="polite"></p>
+          <p class="form__note" id="storageHint"></p>
         </form>
         <div class="contact__info">
           <div class="info-box">
             <h3>Контакты</h3>
             <p>📩 Email: <a href="mailto:hello@coai.team">hello@coai.team</a></p>
             <p>💬 Telegram: <a href="https://t.me/wemms_cr" target="_blank" rel="noopener">@wemms_cr</a></p>
-            <p>📱 QR‑код на визитку — папка <code>assets/qr/</code>.</p>
+            <p>🕓 Full remote: подстраиваемся под ваш часовой пояс и рабочие чаты.</p>
+          </div>
+          <div class="info-box info-box--crm">
+            <h3>CRM и админ‑панель</h3>
+            <p>Каждая заявка попадает в защищённую панель: видно статус в Flowline CRM, почту и историю решений. Доступ выдаём партнёрам после старта проекта.</p>
+            <ul class="crm-access">
+              <li>
+                <span>Live feed</span>
+                <strong>Инбокс + CRM + email</strong>
+              </li>
+              <li>
+                <span>Синхронизация</span>
+                <strong>Обновления в реальном времени</strong>
+              </li>
+              <li>
+                <span>Прозрачность</span>
+                <strong>Статусы и заметки команды</strong>
+              </li>
+            </ul>
+            <p class="form__note">Напишите нам — откроем демо-доступ и покажем, как выглядит трекинг проектов.</p>
           </div>
           <div class="info-box">
             <h3>Почему CoAI</h3>
             <p>Мы объединяем искусство, технологии и управление проектами, чтобы бизнес видел результат, а аудитория — эмоцию.</p>
-            <a class="link-arrow" href="#portfolio">К проектам</a>
+            <div class="info-box__actions">
+              <a class="btn btn--ghost" href="#portfolio" data-scroll>К проектам</a>
+              <a class="btn btn--primary" href="#contact" data-scroll>Обсудить проект</a>
+            </div>
           </div>
         </div>
       </div>
@@ -412,17 +595,43 @@
   </section>
 </main>
 
-<footer class="site-footer" data-animate>
+<footer class="site-footer" data-animate="fade-up">
   <div class="container foot-grid">
-    <div>© <span id="year"></span> CoAI</div>
-    <div class="foot-links">
-      <a href="#about">О нас</a>
-      <a href="#portfolio">Проекты</a>
-      <a href="#resources">Полезное</a>
-      <a href="#contact">Контакты</a>
+    <div class="foot-col">
+      <a href="#hero" class="logo">CoAI</a>
+      <p>Создаём AI‑контент, который помогает брендам рассказывать истории.</p>
+      <ul class="foot-contacts">
+        <li><a href="mailto:hello@coai.team">hello@coai.team</a></li>
+        <li><a href="https://t.me/wemms_cr" target="_blank" rel="noopener">Telegram</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Карта сайта</h4>
+      <ul>
+        <li><a href="#about">О студии</a></li>
+        <li><a href="#capabilities">Направления</a></li>
+        <li><a href="#portfolio">Проекты</a></li>
+        <li><a href="#cases">Кейсы</a></li>
+        <li><a href="#team">Команда</a></li>
+        <li><a href="#contact">Контакты</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Юр. информация</h4>
+      <ul class="foot-legal">
+        <li><a href="privacy.html" target="_blank" rel="noopener">Политика конфиденциальности</a></li>
+        <li><a href="data-processing.html" target="_blank" rel="noopener">Обработка персональных данных</a></li>
+        <li><a href="cookies.html" target="_blank" rel="noopener">Cookies</a></li>
+      </ul>
+      <p class="foot-note">© <span id="year"></span> CoAI Studio. Все права защищены.</p>
     </div>
   </div>
 </footer>
+
+<div class="cookie-banner" id="cookieBanner" role="dialog" aria-live="polite" aria-label="Cookie сообщение">
+  <p>Мы используем cookies для аналитики и сохранения заявок. Нажимая «Принять», вы соглашаетесь с политикой использования файлов cookie.</p>
+  <button class="btn btn--small" id="cookieAccept" type="button">Принять</button>
+</div>
 
 <script src="script.js"></script>
 </body>

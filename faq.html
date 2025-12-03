@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ по AI-контенту — CoAI</title>
+  <meta name="description" content="Ответы на вопросы об авторских правах, лицензиях и этике при создании AI-контента в CoAI.">
+  <meta name="color-scheme" content="dark light">
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const STORAGE_KEY = 'coai::theme';
+      const normalize = value => (value === 'light' || value === 'dark' || value === 'auto') ? value : 'auto';
+      const getStored = () => {
+        try { return localStorage.getItem(STORAGE_KEY); } catch (error) { return null; }
+      };
+      const getSystemTheme = () => {
+        if (typeof window.matchMedia !== 'function') return 'light';
+        return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      };
+      const stored = normalize(getStored());
+      const resolved = stored === 'auto' ? getSystemTheme() : stored;
+      root.dataset.theme = resolved;
+      root.dataset.themeMode = stored;
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="policy-page">
+<header class="site-header site-header--solid">
+  <div class="container nav-wrap">
+    <a href="index.html#hero" class="logo">CoAI</a>
+    <nav class="nav nav--inline" aria-label="Навигация по сайту">
+      <a href="index.html#about">О нас</a>
+      <a href="index.html#portfolio">Проекты</a>
+      <a href="index.html#cases">Кейсы</a>
+      <a href="index.html#contact" class="btn btn--small">Связаться</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <span class="theme-toggle__icons" aria-hidden="true">
+          <span class="theme-toggle__icon theme-toggle__icon--sun">☀️</span>
+          <span class="theme-toggle__icon theme-toggle__icon--moon">🌙</span>
+        </span>
+        <span class="theme-toggle__label" id="themeToggleLabel">Система</span>
+      </button>
+    </div>
+  </div>
+</header>
+<main class="policy">
+  <section class="policy__hero">
+    <p class="policy__eyebrow">Обновлено: декабрь 2025</p>
+    <h1>FAQ по AI-контенту</h1>
+    <p>Собрали ответы на частые вопросы о правовых аспектах, лицензиях и этике использования генеративных инструментов в наших проектах.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>1. Кто владеет правами на созданный AI-контент?</h2>
+    <p>Все финальные материалы, которые мы создаем по вашему запросу (видео, изображения, тексты), передаются вам по договору вместе с неисключительной или исключительной лицензией — в зависимости от условий сотрудничества. Мы фиксируем права и территорию использования в акте или приложении, чтобы у вас была юридическая опора для публикаций и рекламы.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>2. Какие источники и лицензии мы используем?</h2>
+    <ul>
+      <li>Коммерческие стоковые библиотеки с подходящими лицензиями (editorial/royalty-free не используем в рекламных роликах).</li>
+      <li>Внутренние модели и плагины с разрешением на коммерческое применение.</li>
+      <li>Публичные датасеты без ограничений на коммерческое использование — только для обучения вспомогательных моделей, без включения третьих брендов.</li>
+    </ul>
+    <p>Если нужны фирменные элементы (логотипы, товарные знаки) — используем только материалы, предоставленные клиентом или подтвержденные его партнерами.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>3. Как мы проверяем оригинальность и риски совпадений?</h2>
+    <p>После генерации мы проводим ручную валидацию и при необходимости дорабатываем визуал в редакторах, чтобы убрать артефакты и схожие элементы. Для ключевых кампаний используем поиск по реверс-изображениям и проверку на наличие брендов/лицензий в кадре.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>4. Можно ли безопасно использовать AI-ролики в рекламе и перформансе?</h2>
+    <p>Да, если контент соответствует требованиям площадки (Meta, Google, TikTok). Мы адаптируем материалы под правила модерации: убираем запрещенные темы, маркируем AI-креативы, избегаем изображений реальных лиц без согласия и предоставляем необходимые дисклеймеры.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>5. Что с изображениями людей и референсами?</h2>
+    <p>Мы не используем реальные лица без разрешения. Для портретов и персонажей применяем либо синтетические модели, либо кастомные аватары, согласованные с клиентом. Если нужен дубль реального человека, запрашиваем письменное согласие или работаем с актерами.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>6. Этика: чего мы не делаем</h2>
+    <ul>
+      <li>Не создаем дипфейки реальных персон без явного согласия.</li>
+      <li>Не генерируем материалы, нарушающие права или репутацию брендов и людей.</li>
+      <li>Не используем пиратские датасеты, утечки и материалы с ограничениями на коммерческое использование.</li>
+    </ul>
+  </section>
+
+  <section class="policy__block">
+    <h2>7. Где храним данные проектов?</h2>
+    <p>Исходники и промежуточные версии лежат в приватных хранилищах с ограниченным доступом по ролям. Перед финальной публикацией мы удаляем временные файлы с чувствительными данными и передаем вам ссылку на финальные материалы в согласованном формате.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>8. Можно ли использовать материалы в международных кампаниях?</h2>
+    <p>Да, мы проверяем лицензии и соответствие локальным требованиям (GDPR/CCPA для персональных данных, правила площадок). Если планируются разные регионы, сразу закладываем мультиязычные версии и проверяем контент на предмет культурных ограничений.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>9. Как отметить участие AI честно и безопасно?</h2>
+    <p>Рекомендуем прозрачный подход: указывать AI-пайплайн в кейсах, добавлять дисклеймеры в описаниях и использовать формулировки «создано совместно с AI» там, где это важно для аудитории или площадки.</p>
+  </section>
+
+  <section class="policy__block">
+    <h2>10. Что делать, если есть сомнения по конкретному кейсу?</h2>
+    <p>Мы проведем быстрый аудит: проверим исходные данные, подберем лицензии, дадим рекомендации по маркировке и, при необходимости, заменим элементы на гарантированно чистые. Свяжитесь с нами через <a href="index.html#contact">форму на сайте</a> — вернемся с планом в течение рабочего дня.</p>
+  </section>
+</main>
+<footer class="policy-footer">
+  <div class="container policy-footer__layout">
+    <p>CoAI Studio — AI-производство видео и контента.</p>
+    <div class="policy-footer__links">
+      <a href="privacy.html">Политика конфиденциальности</a>
+      <a href="data-processing.html">Обработка данных</a>
+      <a href="cookies.html">Cookies</a>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>

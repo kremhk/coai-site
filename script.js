@@ -1,6 +1,52 @@
 const root = document.documentElement;
+const body = document.body;
 
 // ---------- helpers ----------
+const ADMIN_SESSION_KEY = 'coai::adminAuth';
+const ADMIN_CREDENTIALS = { login: 'kremhk', password: 'toor' };
+const THEME_STORAGE_KEY = 'coai::theme';
+const COOKIE_CONSENT_KEY = 'coai::cookieConsent';
+const safeStorage = {
+  get: key => {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (error) {
+      console.warn('Storage недоступно', error);
+      return null;
+    }
+  },
+  set: (key, value) => {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (error) {
+      console.warn('Storage недоступно', error);
+    }
+  },
+  remove: key => {
+    try {
+      window.localStorage.removeItem(key);
+    } catch (error) {
+      console.warn('Storage недоступно', error);
+    }
+  }
+};
+
+const readCookie = key => {
+  const cookies = document.cookie ? document.cookie.split('; ') : [];
+  const encodedKey = `${encodeURIComponent(key)}=`;
+  const entry = cookies.find(cookie => cookie.startsWith(encodedKey));
+  if (!entry) return null;
+  return decodeURIComponent(entry.slice(encodedKey.length));
+};
+
+const writeCookie = (key, value, options = {}) => {
+  const { maxAge = 31536000 } = options;
+  document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}; path=/; max-age=${maxAge}; SameSite=Lax`;
+};
+
+const dropCookie = key => {
+  document.cookie = `${encodeURIComponent(key)}=; path=/; max-age=0; SameSite=Lax`;
+};
 const throttle = (fn, wait = 150) => {
   let timer = null;
   return (...args) => {
@@ -30,9 +76,143 @@ applyDeviceFlag();
 window.addEventListener('resize', throttle(applyDeviceFlag, 200));
 window.addEventListener('orientationchange', applyDeviceFlag);
 
+// ---------- sticky header ----------
+const header = document.querySelector('.site-header');
+const updateHeaderState = () => {
+  if (!header) return;
+  if (window.scrollY > 8) {
+    header.classList.add('is-sticky');
+  } else {
+    header.classList.remove('is-sticky');
+  }
+};
+updateHeaderState();
+window.addEventListener('scroll', throttle(updateHeaderState, 80));
+
+// ---------- theme toggle ----------
+const themeToggle = document.getElementById('themeToggle');
+const themeToggleLabel = document.getElementById('themeToggleLabel');
+const prefersLight = typeof window.matchMedia === 'function'
+  ? window.matchMedia('(prefers-color-scheme: light)')
+  : null;
+const THEME_MODES = ['auto', 'light', 'dark'];
+const THEME_LABELS = {
+  auto: 'Система',
+  light: 'Светлая',
+  dark: 'Тёмная'
+};
+const getSystemTheme = () => (prefersLight?.matches ? 'light' : 'dark');
+const normalizeTheme = value => {
+  if (value === 'light' || value === 'dark' || value === 'auto') return value;
+  return 'auto';
+};
+const applyTheme = mode => {
+  const targetMode = normalizeTheme(mode);
+  const resolved = targetMode === 'auto' ? getSystemTheme() : targetMode;
+  const nextTheme = resolved === 'light' ? 'light' : 'dark';
+  root.dataset.theme = nextTheme;
+  root.dataset.themeMode = targetMode;
+  body.classList.toggle('theme-light', nextTheme === 'light');
+  const labelText = THEME_LABELS[targetMode] || THEME_LABELS.auto;
+  if (themeToggle) {
+    themeToggle.setAttribute('data-theme-mode', targetMode);
+    themeToggle.setAttribute('aria-label', `Тема: ${labelText}. Нажмите, чтобы переключить.`);
+  }
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent = labelText;
+  }
+};
+const storedMode = normalizeTheme(safeStorage.get(THEME_STORAGE_KEY)) || 'auto';
+applyTheme(storedMode);
+themeToggle?.addEventListener('click', () => {
+  const currentMode = root.dataset.themeMode || 'auto';
+  const index = THEME_MODES.indexOf(currentMode);
+  const nextMode = THEME_MODES[(index + 1) % THEME_MODES.length];
+  applyTheme(nextMode);
+  safeStorage.set(THEME_STORAGE_KEY, nextMode);
+});
+if (prefersLight) {
+  const syncTheme = () => {
+    if ((root.dataset.themeMode || 'auto') !== 'auto') return;
+    applyTheme('auto');
+  };
+  if (typeof prefersLight.addEventListener === 'function') {
+    prefersLight.addEventListener('change', syncTheme);
+  } else if (typeof prefersLight.addListener === 'function') {
+    prefersLight.addListener(syncTheme);
+  }
+}
+
+// ---------- admin login gate ----------
+const initAdminGate = () => {
+  if (!body.classList.contains('admin-page')) return;
+  const form = document.getElementById('adminLoginForm');
+  const lock = document.getElementById('adminLock');
+  const status = document.getElementById('adminLoginStatus');
+  if (!form || !lock) {
+    body.classList.remove('admin-locked');
+    return;
+  }
+
+  const persist = granted => {
+    try {
+      if (granted) {
+        window.sessionStorage.setItem(ADMIN_SESSION_KEY, 'granted');
+      } else {
+        window.sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      }
+    } catch (error) {
+      console.warn('Не удалось сохранить состояние логина', error);
+    }
+  };
+
+  const unlock = () => {
+    persist(true);
+    body.classList.remove('admin-locked');
+    lock.setAttribute('hidden', '');
+    lock.setAttribute('aria-hidden', 'true');
+    status.textContent = '';
+  };
+
+  const saved = (() => {
+    try {
+      return window.sessionStorage.getItem(ADMIN_SESSION_KEY);
+    } catch (error) {
+      console.warn('Не удалось прочитать состояние логина', error);
+      return null;
+    }
+  })();
+
+  if (saved === 'granted') {
+    unlock();
+    return;
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const login = String(formData.get('login') || '').trim();
+    const password = String(formData.get('password') || '').trim();
+    const isValid = login === ADMIN_CREDENTIALS.login && password === ADMIN_CREDENTIALS.password;
+    if (isValid) {
+      unlock();
+      form.reset();
+    } else {
+      persist(false);
+      status.textContent = 'Нет доступа: проверьте логин и пароль.';
+      form.reset();
+      const loginField = form.querySelector('input[name="login"]');
+      loginField?.focus();
+    }
+  });
+};
+
+initAdminGate();
+
 // ---------- navigation ----------
 const burger = document.getElementById('burger');
 const nav = document.getElementById('nav');
+const navLinks = Array.from(document.querySelectorAll('[data-nav-link]'));
 
 burger?.addEventListener('click', () => {
   const open = nav.classList.toggle('open');
@@ -54,8 +234,44 @@ anchorLinks.forEach(link => {
   });
 });
 
+const setActiveNav = targetId => {
+  navLinks.forEach(link => {
+    const matches = link.getAttribute('href') === targetId;
+    link.classList.toggle('is-active', matches);
+    if (matches) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+};
+
+const sections = navLinks
+  .map(link => document.querySelector(link.getAttribute('href')))
+  .filter(section => section instanceof HTMLElement);
+
+if ('IntersectionObserver' in window && sections.length) {
+  const navObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setActiveNav(`#${entry.target.id}`);
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px', threshold: 0.1 });
+  sections.forEach(section => navObserver.observe(section));
+  setActiveNav(`#${sections[0].id}`);
+} else if (sections.length) {
+  setActiveNav(`#${sections[0].id}`);
+}
+
 // ---------- scroll animations ----------
 const animated = document.querySelectorAll('[data-animate]');
+animated.forEach(el => {
+  const delay = el.getAttribute('data-animate-delay');
+  if (delay) {
+    el.style.transitionDelay = delay;
+  }
+});
 if ('IntersectionObserver' in window && animated.length) {
   const observer = new IntersectionObserver((entries, obs) => {
     entries.forEach(entry => {
@@ -68,6 +284,21 @@ if ('IntersectionObserver' in window && animated.length) {
   animated.forEach(el => observer.observe(el));
 } else {
   animated.forEach(el => el.classList.add('is-visible'));
+}
+
+// ---------- parallax ----------
+const parallaxNodes = document.querySelectorAll('[data-parallax]');
+const updateParallax = () => {
+  const offset = window.scrollY;
+  parallaxNodes.forEach(node => {
+    const speed = parseFloat(node.getAttribute('data-speed')) || 0.2;
+    const translate = offset * speed * 0.15;
+    node.style.transform = `translate3d(0, ${translate}px, 0)`;
+  });
+};
+if (parallaxNodes.length) {
+  updateParallax();
+  window.addEventListener('scroll', throttle(updateParallax, 16));
 }
 
 // ---------- hero CTA ----------
@@ -103,10 +334,68 @@ const supportsStorage = (() => {
   }
 })();
 
+const StorageBridge = (() => {
+  let mode = supportsStorage ? 'localStorage' : 'cookie';
+
+  const notify = () => {
+    window.dispatchEvent(new CustomEvent('lead-storage-mode-changed', { detail: { mode } }));
+  };
+
+  const fallbackToCookie = error => {
+    if (mode === 'cookie') return;
+    console.warn('Переключаемся на cookie‑режим: localStorage недоступно', error);
+    mode = 'cookie';
+    notify();
+  };
+
+  const getItem = key => {
+    if (mode === 'localStorage') {
+      try {
+        return window.localStorage.getItem(key);
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    return readCookie(key);
+  };
+
+  const setItem = (key, value) => {
+    if (mode === 'localStorage') {
+      try {
+        window.localStorage.setItem(key, value);
+        return;
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    writeCookie(key, value);
+  };
+
+  const removeItem = key => {
+    if (mode === 'localStorage') {
+      try {
+        window.localStorage.removeItem(key);
+        return;
+      } catch (error) {
+        fallbackToCookie(error);
+      }
+    }
+    dropCookie(key);
+  };
+
+  notify();
+
+  return {
+    getItem,
+    setItem,
+    removeItem,
+    getMode: () => mode
+  };
+})();
+
 const readQueue = key => {
-  if (!supportsStorage) return [];
   try {
-    const raw = window.localStorage.getItem(key);
+    const raw = StorageBridge.getItem(key);
     if (!raw) return [];
     const data = JSON.parse(raw);
     if (Array.isArray(data)) return data;
@@ -118,9 +407,8 @@ const readQueue = key => {
 };
 
 const writeQueue = (key, list) => {
-  if (!supportsStorage) return;
   try {
-    window.localStorage.setItem(key, JSON.stringify(list));
+    StorageBridge.setItem(key, JSON.stringify(list));
     window.dispatchEvent(new CustomEvent('lead-storage-changed', { detail: { key } }));
   } catch (error) {
     console.error('Не удалось сохранить очередь', key, error);
@@ -206,6 +494,7 @@ const LeadRouter = {
 
 // ---------- contact form ----------
 const contactForm = document.getElementById('contactForm');
+const storageHint = document.getElementById('storageHint');
 if (contactForm) {
   const statusNode = contactForm.querySelector('.form__status');
   contactForm.addEventListener('submit', async event => {
@@ -232,18 +521,57 @@ if (contactForm) {
     };
 
     statusNode.textContent = 'Отправляем заявку во все каналы…';
+    contactForm.classList.remove('is-success', 'is-error');
     contactForm.classList.add('is-sending');
 
     try {
       await LeadRouter.routeLead(lead);
-      statusNode.textContent = 'Готово! Сообщение ушло на почту, в CRM и появилось в админ-панели.';
+      statusNode.textContent = 'Спасибо! Мы получили заявку и ответим в течение 1–2 рабочих часов.';
       contactForm.reset();
+      contactForm.classList.add('is-success');
+      window.setTimeout(() => contactForm.classList.remove('is-success'), 3000);
     } catch (error) {
       console.error(error);
       statusNode.textContent = 'Не удалось отправить заявку. Попробуйте ещё раз или напишите напрямую на hello@coai.team.';
+      contactForm.classList.add('is-error');
     } finally {
       contactForm.classList.remove('is-sending');
     }
+  });
+}
+
+const storageWarning = document.getElementById('storageWarning');
+const applyStorageMode = () => {
+  const mode = StorageBridge.getMode();
+  if (storageHint) {
+    storageHint.textContent = mode === 'localStorage'
+      ? 'Заявка сохранится в панели трекинга и синхронизируется между устройствами.'
+      : 'Браузер ограничил localStorage — заявка зафиксируется в cookies и будет доступна только на этом устройстве.';
+  }
+  if (storageWarning) {
+    if (mode !== 'localStorage') {
+      storageWarning.removeAttribute('hidden');
+    } else {
+      storageWarning.setAttribute('hidden', 'hidden');
+    }
+  }
+};
+
+applyStorageMode();
+window.addEventListener('lead-storage-mode-changed', applyStorageMode);
+
+// ---------- cookie banner ----------
+const cookieBanner = document.getElementById('cookieBanner');
+const cookieAccept = document.getElementById('cookieAccept');
+if (cookieBanner && cookieAccept) {
+  const consent = safeStorage.get(COOKIE_CONSENT_KEY) || readCookie(COOKIE_CONSENT_KEY);
+  if (consent === 'accepted' || consent === '1') {
+    cookieBanner.setAttribute('hidden', 'hidden');
+  }
+  cookieAccept.addEventListener('click', () => {
+    safeStorage.set(COOKIE_CONSENT_KEY, 'accepted');
+    writeCookie(COOKIE_CONSENT_KEY, '1');
+    cookieBanner.setAttribute('hidden', 'hidden');
   });
 }
 

@@ -9,7 +9,25 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="admin-page">
+<body class="admin-page admin-locked">
+<div class="admin-login" id="adminLock" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle">
+  <form class="admin-login__form" id="adminLoginForm" autocomplete="off">
+    <div class="admin-login__intro">
+      <h1 id="adminLoginTitle">Вход в админ‑панель</h1>
+      <p>Введите логин и пароль, чтобы посмотреть входящие заявки и журналы.</p>
+    </div>
+    <label>
+      Логин
+      <input type="text" name="login" inputmode="text" autocomplete="username" required autofocus>
+    </label>
+    <label>
+      Пароль
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button class="btn" type="submit">Войти</button>
+    <p class="form__status" id="adminLoginStatus" role="status" aria-live="polite"></p>
+  </form>
+</div>
 <header class="site-header site-header--solid" data-animate>
   <div class="container nav-wrap">
     <a href="index.html" class="logo">CoAI</a>
@@ -58,6 +76,9 @@
             </div>
           </dl>
         </aside>
+        <div class="admin-hero__alert" id="storageWarning" hidden>
+          <strong>Внимание:</strong> браузер заблокировал localStorage, поэтому заявки сохраняются в cookies и доступны только на этом устройстве.
+        </div>
       </div>
     </div>
   </section>
